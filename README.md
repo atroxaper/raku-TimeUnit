@@ -50,7 +50,7 @@ from one unit to another like this:
 AUTHOR
 ------
 
-Mikhail Khorkov
+Mikhail Khorkov <atroxaper@cpan.org>
 
 LICENSE
 -------
