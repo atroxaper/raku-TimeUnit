@@ -12,30 +12,30 @@ Purpose
 code - not only seconds:
 
         sub beep-after($time, TimeUnit:D $unit) { ... }
-        beep-after(5, HOURS);
-        beep-after(3, SECONDS);
+        beep-after(5, hours);
+        beep-after(3, seconds);
 
 * Add a simple way for conversion time units from
 one to another without any 'magic numbers' in code:
 
-        say 'In 36 hours contains ', HOURS.to-seconds(36), ' seconds.';
+        say 'In 36 hours contains ', seconds.from(:36hours), ' seconds.';
 
 Exported constants
 ------------------
 
-**NANOSECONDS** - just nanoseconds;
+**nanos** - just nanoseconds;
 
-**MICROSECONDS** - is a thousand of nanoseconds;
+**micros** - is a thousand of nanoseconds;
 
-**MILLISECONDS** - is a thousand of microseconds;
+**millis** - is a thousand of microseconds;
 
-**SECONDS** - is a thousand of milliseconds;
+**seconds** - is a thousand of milliseconds;
 
-**MINUTES** - is sixty seconds;
+**minutes** - is sixty seconds;
 
-**HOURS** - is sixty minutes;
+**hours** - is sixty minutes;
 
-**DAYS** - is twenty four hours;
+**days** - is twenty four hours;
 
 Available methods
 -----------------
@@ -44,8 +44,11 @@ With any constants you can use methods **from**, **to-nanos**, **to-micros**, **
 **to-seconds**, **to-minutes**, **to-hours**, **to-days** for conversion numbers 
 from one unit to another like this:
 
-        NANOSECONDS.to-hours(432); # convert 432 nanosecons to 0.00000000012 hour
-        HOURS.from(90, MINUTES);   # retrieve 1.5 hours from 90 minutes
+        nanos.to-hours(432);      # convert 432 nanosecons to 0.00000000012 hour
+        hours.from(90, minutes);  # retrieve 1.5 hours from 90 minutes
+        seconds.from(:17minutes); # retrieve 1020 seconds 17 minutes in short named form
+        minutes.from(hours => 3.6);
+            # retrieve 216 minutes from 3.6 (3:36) hours in full named form
 
 Sources
 -------

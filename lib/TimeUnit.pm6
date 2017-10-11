@@ -10,7 +10,7 @@ my constant day = hour * 24;
 
 #|[Class for representing a time unit like nanosecond or hour.
 #
-# Class is private. You can use corresponding instances like NANOSECONDS or HOUR.
+# Class is private. You can use corresponding instances like nanos or hours.
 #]
 my class TimeUnit {
   has Str $.name;
@@ -52,18 +52,58 @@ my class TimeUnit {
   }
 
   #|Convert specified number from specified unit to current unit.
-  method from($d, TimeUnit:D $u) {
+  multi method from($d, TimeUnit:D $u) {
     $d * ($u.nanos-volume / $!nanos-volume);
+  }
+
+  #|Convert specified number from nanos unit to current unit.
+  multi method from(:$nanos!) {
+    $nanos * (nano / $!nanos-volume);
+  }
+
+  #|Convert specified number from micros unit to current unit.
+  multi method from(:$micros!) {
+    $micros * (micro / $!nanos-volume);
+  }
+
+  #|Convert specified number from millis unit to current unit.
+  multi method from(:$millis!) {
+    $millis * (milli / $!nanos-volume);
+  }
+
+  #|Convert specified number from seconds unit to current unit.
+  multi method from(:$seconds!) {
+    $seconds * (sec / $!nanos-volume);
+  }
+
+  #|Convert specified number from minutes unit to current unit.
+  multi method from(:$minutes!) {
+    $minutes * (min / $!nanos-volume);
+  }
+
+  #|Convert specified number from hours unit to current unit.
+  multi method from(:$hours!) {
+    $hours * (hour / $!nanos-volume);
+  }
+
+  #|Convert specified number from days unit to current unit.
+  multi method from(:$days!) {
+    $days * (day / $!nanos-volume);
+  }
+
+  multi method from(|) {
+    die 'you can only use from method with named parameters: ' ~
+      'nanos, micros, millis, seconds, minutes, hours, days.';
   }
 }
 
-constant NANOSECONDS  = TimeUnit.new: name => 'NANOSECOND',   nanos-volume => nano;
-constant MICROSECONDS = TimeUnit.new: name => 'MICROSECONDS', nanos-volume => micro;
-constant MILLISECONDS = TimeUnit.new: name => 'MILLISECONDS', nanos-volume => milli;
-constant SECONDS      = TimeUnit.new: name => 'SECONDS',      nanos-volume => sec;
-constant MINUTES      = TimeUnit.new: name => 'MINUTES',      nanos-volume => min;
-constant HOURS        = TimeUnit.new: name => 'HOURS',        nanos-volume => hour;
-constant DAYS         = TimeUnit.new: name => 'DAYS',         nanos-volume => day;
+constant nanos   = TimeUnit.new: name => 'nanosecond',  nanos-volume => nano;
+constant micros  = TimeUnit.new: name => 'microsecond', nanos-volume => micro;
+constant millis  = TimeUnit.new: name => 'millisecond', nanos-volume => milli;
+constant seconds = TimeUnit.new: name => 'second',      nanos-volume => sec;
+constant minutes = TimeUnit.new: name => 'minute',      nanos-volume => min;
+constant hours   = TimeUnit.new: name => 'hour',        nanos-volume => hour;
+constant days    = TimeUnit.new: name => 'day',         nanos-volume => day;
 
 
 
