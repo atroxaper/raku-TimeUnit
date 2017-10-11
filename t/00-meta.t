@@ -4,7 +4,7 @@ use v6;
 use Test;
 use lib 'lib';
 
-plan 0;
+plan 1;
 
 constant AUTHOR = ?%*ENV<AUTHOR_TESTING>;
 
