@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/atroxaper/p6-TimeUnit.svg?branch=master)](https://travis-ci.org/atroxaper/p6-TimeUnit)
+
 TimeUnit
 ========
 
