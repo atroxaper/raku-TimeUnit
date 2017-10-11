@@ -47,12 +47,17 @@ from one unit to another like this:
         NANOSECONDS.to-hours(432); # convert 432 nanosecons to 0.00000000012 hour
         HOURS.from(90, MINUTES);   # retrieve 1.5 hours from 90 minutes
 
-AUTHOR
+Sources
+-------
+
+[GitHub](https://github.com/atroxaper/p6-TimeUnit/blob/master/README.md)
+
+Author
 ------
 
 Mikhail Khorkov <atroxaper@cpan.org>
 
-LICENSE
+License
 -------
 
 See [LICENSE](LICENSE) file for the details of the license of the code in this repository.
