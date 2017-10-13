@@ -12,7 +12,7 @@ my constant day = hour * 24;
 #
 # Class is private. You can use corresponding instances like nanos or hours.
 #]
-my class TimeUnit {
+class TimeUnit {
   has Str $.name;
   has Int $.nanos-volume;
 
