@@ -53,7 +53,7 @@ from one unit to another like this:
 Sources
 -------
 
-[GitHub](https://github.com/atroxaper/p6-TimeUnit/blob/master/README.md)
+[GitHub](https://github.com/atroxaper/p6-TimeUnit)
 
 Author
 ------
