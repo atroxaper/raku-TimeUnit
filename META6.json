@@ -6,7 +6,7 @@
   "author" : [ "Mikhail Khorkov" ],
   "license" : "Artistic-2.0",
   "provides" : {
-    "TimeUnit" : "lib/TimeUnit.pm6"
+    "TimeUnit" : "lib/TimeUnit.rakumod"
   },
   "tags": [ "time" ],
   "source-url" : "git://github.com/atroxaper/p6-TimeUnit.git"

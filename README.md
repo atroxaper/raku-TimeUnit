@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/atroxaper/p6-TimeUnit.svg?branch=master)](https://travis-ci.org/atroxaper/p6-TimeUnit)
+[![Build Status](https://github.com/atroxaper/p6-TimeUnit/workflows/build/badge.svg)](https://github.com/atroxaper/p6-TimeUnit/actions)
 
 TimeUnit
 ========
