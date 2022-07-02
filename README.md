@@ -13,12 +13,12 @@
 use TimeUnit;
 
 sub beep-after(<b>TimeUnit:D $time</b>) {
-	Promise.in(<b>$time.to-seconds</b>).then: { beep() }
+    Promise.in(<b>$time.to-seconds</b>).then: { beep() }
 }
 
 Promise.in(<b>timeunit(:3days :1hour :3sec).to-seconds</b>).then: { send-email() }
 
-<b>days(4) + hours(3).minus(nanos(3)) < timeunit(:4d, :3h);</b>
+<b>days(4) + hours(3).minus(nanos(3)) < timeunit(:4d :3h);</b>
 
 <b>minutes(15).to(hours) == 0.25;</b>
 </pre>
@@ -29,13 +29,13 @@ If you use zef, then `zef install TimeUnit`, or `pakku add TimeUnit` if you use 
 
 # DESCRIPTION
 
-TimeUnit` library provide a simple way for conversion time without any 'magic numbers' in code. Also, 'TimeUnit' can help you to write a more intuitive API in part of using time.
+`TimeUnit` library provides a simple way for conversion time without any 'magic numbers' in code. Also, `TimeUnit` can help you to write a more intuitive API in part of using time.
 
-You have the following routines create corresponding `TimeUnit` object: `nanos`, `micros`, `millis`, `seconds`, `minutes`, `hours` and `days`. All of them take a single `Numeric()` argument. Additionally, you can create `TimeUnit` object through `timeunit` routing in a relaxed way like `timeunit(:1day :3h :6nanoseconds)`.
+You may use the following routines to create corresponding `TimeUnit` object: `nanos`, `micros`, `millis`, `seconds`, `minutes`, `hours` and `days`. All of them take a single `Numeric()` argument. Additionally, you may create `TimeUnit` object through `timeunit` routing in a relaxed way like `timeunit(:1day :3h :6nanoseconds)`.
 
-`TimeUnit` object can be compared as ordinary Numerics. Also, you can add and subtract them with `infix:<+>`, `infix:<->` routines and `plus` and `minus` methods.
+`TimeUnit` object can be compared as ordinary Numerics. Also, you may add and subtract them with `infix:<+>` and `infix:<->` routines and `plus` and `minus` methods.
 
-To convert `TimeUnit` object to some numeric representation use one of the following method: `to-nanos`, `to-micros`, `to-millis`, `to-seconds`, `to-hours`, `to-days` ro just `to('days')`. You can pass a name of unit to `to` method with or without quotation.
+To convert `TimeUnit` object to some numeric representation use one of the following method: `to-nanos`, `to-micros`, `to-millis`, `to-seconds`, `to-hours`, `to-days` or simply `to('days')`. It is possible to pass a name of unit to `to` method with or without quotation.
 
 # AUTHOR
 
