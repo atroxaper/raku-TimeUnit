@@ -32,7 +32,10 @@ class TimeUnit {
   method to-minutes(TimeUnit:D: --> Numeric:D) { $!nano / min }
   method to-hours(TimeUnit:D: --> Numeric:D) { $!nano / hour }
   method to-days(TimeUnit:D: --> Numeric:D) { $!nano / day }
-  method to(TimeUnit:D: UnitTimeName:D $unit --> Numeric:D) { $!nano / $unit.value }
+  multi method to(TimeUnit:D: UnitTimeName:D $unit --> Numeric:D) { $!nano / $unit.value }
+  multi method to(TimeUnit:D: Str:D $unit --> Numeric:D) {
+    $!nano / UnitTimeName::{$unit}.value
+  }
 
   multi method plus(TimeUnit:D: TimeUnit:D $plus --> TimeUnit:D) {
     create($!nano + $plus!nano, 'n')
