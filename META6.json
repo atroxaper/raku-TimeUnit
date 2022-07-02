@@ -1,13 +1,22 @@
 {
-  "perl" : "6.*",
-  "name" : "TimeUnit",
-  "version" : "0.1.1",
-  "description" : "Library for conversion a time unit to another.",
-  "author" : [ "Mikhail Khorkov" ],
-  "license" : "Artistic-2.0",
-  "provides" : {
-    "TimeUnit" : "lib/TimeUnit.rakumod"
+  "name": "TimeUnit",
+  "description": "Library for conversion a time from one unit to another.",
+  "version": "1.3.1",
+  "perl": "6.d",
+  "authors": [
+    "Mikhail Khorkov"
+  ],
+  "auth": "zef:atroxaper",
+  "depends": [],
+  "build-depends": [],
+  "test-depends": [],
+  "provides": {
+    "TimeUnit": "lib/TimeUnit.rakumod"
   },
-  "tags": [ "time" ],
-  "source-url" : "git://github.com/atroxaper/p6-TimeUnit.git"
+  "license": "Artistic-2.0",
+  "tags": [
+    "TIME"
+  ],
+  "api": "1",
+  "source-url": "https://github.com/atroxaper/p6-TimeUnit.git"
 }
