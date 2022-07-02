@@ -41,7 +41,7 @@ To convert `TimeUnit` object to some numeric representation use one of the follo
 
 Mikhail Khorkov <atroxaper[at]cpan.org>
 
-Sources can be found at: [github](https://github.com/atroxaper/raku-TimeUnit)). The new Issues and Pull Requests are welcome.
+Sources can be found at: [github](https://github.com/atroxaper/raku-TimeUnit). The new Issues and Pull Requests are welcome.
 
 # COPYRIGHT AND LICENSE
 
