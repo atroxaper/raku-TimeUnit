@@ -1,0 +1,31 @@
+name: Code Coverage
+
+on:
+  push:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  raku:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+        raku-version:
+          - 'latest'
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: Raku/setup-raku@v1
+        with:
+          raku-version: ${{ matrix.raku-version }}
+      - name: Install Dependencies
+        run: zef install --/test --test-depends --deps-only .
+      - name: Install Test Engine
+        run: zef install --/test App::Racoco App::Racoco::Report::ReporterCoveralls App::Prove6
+      - name: Run RaCoCo
+        run: racoco coveralls
+        env:
+          RAKULIB: './lib'
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
