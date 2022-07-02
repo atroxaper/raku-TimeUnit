@@ -1,2 +1,5 @@
-.idea/
-**/.precomp/
+**/*.iml
+**/.idea/**
+**/.precomp/**
+**/.racoco/**
+**/.DS_Store
