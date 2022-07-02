@@ -1,71 +1,50 @@
-[![Build Status](https://github.com/atroxaper/p6-TimeUnit/workflows/build/badge.svg)](https://github.com/atroxaper/p6-TimeUnit/actions)
+[![Ubuntu](https://github.com/atroxaper/raku-TimeUnit/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/atroxaper/raku-TimeUnit/actions/workflows/ubuntu.yml)
+[![MacOS](https://github.com/atroxaper/raku-TimeUnit/actions/workflows/macos.yml/badge.svg)](https://github.com/atroxaper/raku-TimeUnit/actions/workflows/macos.yml)
+[![Windows](https://github.com/atroxaper/raku-TimeUnit/actions/workflows/windows.yml/badge.svg)](https://github.com/atroxaper/raku-TimeUnit/actions/workflows/windows.yml)
+[![Coverage Status](https://coveralls.io/repos/github/atroxaper/raku-TimeUnit/badge.svg?branch=master)](https://coveralls.io/github/atroxaper/raku-TimeUnit?branch=master)
 
-TimeUnit
-========
+# NAME
 
-Library for conversion a time unit to another.
+`TimeUnit` - library for conversion a time from one unit to another.
 
-Purpose
--------
+# SYNOPSIS
 
-* Add possibility to use different time units in
-code - not only seconds:
+<pre lang="raku">
+use TimeUnit;
 
-        sub beep-after($time, TimeUnit:D $unit) { ... }
-        beep-after(5, hours);
-        beep-after(3, seconds);
+sub beep-after(<b>TimeUnit:D $time</b>) {
+    Promise.in(<b>$time.to-seconds</b>).then: { beep() }
+}
 
-* Add a simple way for conversion time units from
-one to another without any 'magic numbers' in code:
+Promise.in(<b>timeunit(:3days :1hour :3sec).to-seconds</b>).then: { send-email() }
 
-        say 'In 36 hours contains ', seconds.from(:36hours), ' seconds.';
+<b>days(4) + hours(3).minus(nanos(3)) < timeunit(:4d :3h);</b>
 
-Exported constants
-------------------
+<b>minutes(15).to(hours) == 0.25;</b>
+</pre>
 
-**nanos** - just nanoseconds;
+# INSTALLATION
 
-**micros** - is a thousand of nanoseconds;
+If you use zef, then `zef install TimeUnit`, or `pakku add TimeUnit` if you use Pakku.
 
-**millis** - is a thousand of microseconds;
+# DESCRIPTION
 
-**seconds** - is a thousand of milliseconds;
+`TimeUnit` library provides a simple way for conversion time without any 'magic numbers' in code. Also, `TimeUnit` can help you to write a more intuitive API in part of using time.
 
-**minutes** - is sixty seconds;
+You may use the following routines to create corresponding `TimeUnit` object: `nanos`, `micros`, `millis`, `seconds`, `minutes`, `hours` and `days`. All of them take a single `Numeric()` argument. Additionally, you may create `TimeUnit` object through `timeunit` routing in a relaxed way like `timeunit(:1day :3h :6nanoseconds)`.
 
-**hours** - is sixty minutes;
+`TimeUnit` object can be compared as ordinary Numerics. Also, you may add and subtract them with `infix:<+>` and `infix:<->` routines and `plus` and `minus` methods.
 
-**days** - is twenty four hours;
+To convert `TimeUnit` object to some numeric representation use one of the following method: `to-nanos`, `to-micros`, `to-millis`, `to-seconds`, `to-hours`, `to-days` or simply `to('days')`. It is possible to pass a name of unit to `to` method with or without quotation.
 
-Available methods
------------------
+# AUTHOR
 
-With any constants you can use methods **from**, **to-nanos**, **to-micros**, **to-millis**,
-**to-seconds**, **to-minutes**, **to-hours**, **to-days** for conversion numbers 
-from one unit to another like this:
+Mikhail Khorkov <atroxaper[at]cpan.org>
 
-        nanos.to-hours(432);      # convert 432 nanosecons to 0.00000000012 hour
-        hours.from(90, minutes);  # retrieve 1.5 hours from 90 minutes
-        seconds.from(:17minutes); # retrieve 1020 seconds 17 minutes in short named form
-        minutes.from(hours => 3.6);
-            # retrieve 216 minutes from 3.6 (3:36) hours in full named form
+Sources can be found at: [github](https://github.com/atroxaper/raku-TimeUnit). The new Issues and Pull Requests are welcome.
 
-Sources
--------
+# COPYRIGHT AND LICENSE
 
-[GitHub](https://github.com/atroxaper/p6-TimeUnit)
+Copyright 2022 Mikhail Khorkov
 
-Author
-------
-
-Mikhail Khorkov <atroxaper@cpan.org>
-
-License
--------
-
-See [LICENSE](LICENSE) file for the details of the license of the code in this repository.
-
-       
-
-
-
+This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.

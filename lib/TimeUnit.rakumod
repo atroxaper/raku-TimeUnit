@@ -8,102 +8,101 @@ my constant min = sec * 60;
 my constant hour = min * 60;
 my constant day = hour * 24;
 
-#|[Class for representing a time unit like nanosecond or hour.
+enum UnitTimeName (
+  nanos => nano,
+  micros => micro,
+  millis => milli,
+  seconds => sec,
+  minutes => min,
+  hours => hour,
+  days => day
+);
+
+#|[Class for representing a time unit like nanosecond or hour
 #
-# Class is private. You can use corresponding instances like nanos or hours.
-#]
+# Class is private. You can use corresponding instances like nanos or hours.]
 class TimeUnit {
-  has Str $.name;
-  has Int $.nanos-volume;
+  has $!nano is built;
+  method !nano() { $!nano }
 
-  #|Convert specified number from current unit to nanoseconds.
-  method to-nanos($d) {
-    $d * ($!nanos-volume / nano);
+  method to-nanos(TimeUnit:D: --> Numeric:D) { $!nano }
+  method to-micros(TimeUnit:D: --> Numeric:D) { $!nano / micro }
+  method to-millis(TimeUnit:D: --> Numeric:D) { $!nano / milli }
+  method to-seconds(TimeUnit:D: --> Numeric:D) { $!nano / sec }
+  method to-minutes(TimeUnit:D: --> Numeric:D) { $!nano / min }
+  method to-hours(TimeUnit:D: --> Numeric:D) { $!nano / hour }
+  method to-days(TimeUnit:D: --> Numeric:D) { $!nano / day }
+  multi method to(TimeUnit:D: UnitTimeName:D $unit --> Numeric:D) { $!nano / $unit.value }
+  multi method to(TimeUnit:D: Str:D $unit --> Numeric:D) {
+    $!nano / UnitTimeName::{$unit}.value
   }
 
-  #|Convert specified number from current unit to microseconds.
-  method to-micros($d) {
-    $d * ($!nanos-volume / micro);
+  multi method plus(TimeUnit:D: TimeUnit:D $plus --> TimeUnit:D) {
+    create($!nano + $plus!nano, 'n')
+  }
+  multi method plus(TimeUnit:D: |c --> TimeUnit:D) {
+    create($!nano + nanos-from(|c), 'n')
+  }
+  multi method minus(TimeUnit:D: TimeUnit:D $plus --> TimeUnit:D) {
+    create($!nano - $plus!nano, 'n')
+  }
+  multi method minus(TimeUnit:D: |c --> TimeUnit:D) {
+    create($!nano - nanos-from(|c), 'n')
   }
 
-  #|Convert specified number from current unit to milliseconds.
-  method to-millis($d) {
-    $d * ($!nanos-volume / milli);
+  method WHICH(TimeUnit:D: --> ValueObjAt:D) {
+    ValueObjAt.new("TimeUnit|$!nano");
   }
 
-  #|Convert specified number from current unit to seconds.
-  method to-seconds($d) {
-    $d * ($!nanos-volume / sec);
-  }
+  method Real() { $!nano }
 
-  #|Convert specified number from current unit to minutes.
-  method to-minutes($d) {
-    $d * ($!nanos-volume / min);
-  }
-
-  #|Convert specified number from current unit to hours.
-  method to-hours($d) {
-    $d * ($!nanos-volume / hour);
-  }
-
-  #|Convert specified number from current unit to days.
-  method to-days($d) {
-    $d * ($!nanos-volume / day);
-  }
-
-  #|Convert specified number from specified unit to current unit.
-  multi method from($d, TimeUnit:D $u) {
-    $d * ($u.nanos-volume / $!nanos-volume);
-  }
-
-  #|Convert specified number from nanos unit to current unit.
-  multi method from(:$nanos!) {
-    $nanos * (nano / $!nanos-volume);
-  }
-
-  #|Convert specified number from micros unit to current unit.
-  multi method from(:$micros!) {
-    $micros * (micro / $!nanos-volume);
-  }
-
-  #|Convert specified number from millis unit to current unit.
-  multi method from(:$millis!) {
-    $millis * (milli / $!nanos-volume);
-  }
-
-  #|Convert specified number from seconds unit to current unit.
-  multi method from(:$seconds!) {
-    $seconds * (sec / $!nanos-volume);
-  }
-
-  #|Convert specified number from minutes unit to current unit.
-  multi method from(:$minutes!) {
-    $minutes * (min / $!nanos-volume);
-  }
-
-  #|Convert specified number from hours unit to current unit.
-  multi method from(:$hours!) {
-    $hours * (hour / $!nanos-volume);
-  }
-
-  #|Convert specified number from days unit to current unit.
-  multi method from(:$days!) {
-    $days * (day / $!nanos-volume);
-  }
-
-  multi method from(|) {
-    die 'you can only use from method with named parameters: ' ~
-      'nanos, micros, millis, seconds, minutes, hours, days.';
-  }
+  method Numeric() { $!nano }
 }
 
-constant nanos   = TimeUnit.new: name => 'nanosecond',  nanos-volume => nano;
-constant micros  = TimeUnit.new: name => 'microsecond', nanos-volume => micro;
-constant millis  = TimeUnit.new: name => 'millisecond', nanos-volume => milli;
-constant seconds = TimeUnit.new: name => 'second',      nanos-volume => sec;
-constant minutes = TimeUnit.new: name => 'minute',      nanos-volume => min;
-constant hours   = TimeUnit.new: name => 'hour',        nanos-volume => hour;
-constant days    = TimeUnit.new: name => 'day',         nanos-volume => day;
+sub create($n, $unit) {
+  TimeUnit.new: nano => nanos-from(|($unit => $n));
+}
 
+sub nanos(Numeric() $n where * >= 0 --> TimeUnit:D) is export { create($n, 'n') }
+sub micros(Numeric() $n where * >= 0 --> TimeUnit:D) is export { create($n, 'mic') }
+sub millis(Numeric() $n where * >= 0 --> TimeUnit:D) is export { create($n, 'mil') }
+sub seconds(Numeric() $n where * >= 0 --> TimeUnit:D) is export { create($n, 'sec') }
+sub minutes(Numeric() $n where * >= 0 --> TimeUnit:D) is export { create($n, 'min') }
+sub hours(Numeric() $n where * >= 0 --> TimeUnit:D) is export { create($n, 'h') }
+sub days(Numeric() $n where * >= 0 --> TimeUnit:D) is export { create($n, 'd') }
+multi sub timeunit(Numeric() $n where * >= 0, UnitTimeName:D $unit --> TimeUnit:D) is export {
+  create($n, $unit.key)
+}
+multi sub timeunit(|c --> TimeUnit:D) is export {
+  create(nanos-from(|c), 'n');
+}
+multi sub infix:<+>(TimeUnit:D $l, TimeUnit:D $r --> TimeUnit:D) is export { $l.plus($r) }
+multi sub infix:<->(TimeUnit:D $l, TimeUnit:D $r --> TimeUnit:D) is export { $l.minus($r) }
 
+multi sub nanos-from(
+    Numeric() :d(:day(:$days)) where { $_ >= 0 } = 0,
+    Numeric() :h(:hour(:$hours)) where { $_ >= 0 } = 0,
+    Numeric() :min(:minute(:$minutes)) where { $_ >= 0 } = 0,
+    Numeric() :s(:sec(:second(:$seconds))) where { $_ >= 0 } = 0,
+    Numeric() :mil(:milli(:millisecond(:milliseconds(:$millis)))) where { $_ >= 0 } = 0,
+    Numeric() :mic(:mocro(:microsecond(:microseconds(:$micros)))) where { $_ >= 0 } = 0,
+    Numeric() :n(:nano(:nanosecond(:nanoseconds(:$nanos)))) where { $_ >= 0 } = 0,
+    |c
+    --> Numeric:D
+) {
+  nextwith(|c) if c;
+  $nanos * nano +
+      $micros * micro +
+      $millis * milli +
+      $seconds * sec +
+      $minutes * min +
+      $hours * hour +
+      $days * day
+}
 
+#| Fallback to die
+multi sub nanos-from(|c) {
+  die "With TimeUnit you only can use named parameters:\n" ~
+      "nanos, micros, millis, seconds, minutes, hours, days.\n" ~
+      "But you specified: [{c}].";
+}
