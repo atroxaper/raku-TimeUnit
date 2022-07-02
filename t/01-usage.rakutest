@@ -1,0 +1,29 @@
+use v6.d;
+use Test;
+use lib 'lib';
+use TimeUnit;
+
+plan 19;
+
+is millis(1).to-nanos, 1 * 1000 * 1000, 'millis unit to nanos';
+is minutes(30).to-seconds, 30 * 60, 'min unit to seconds';
+is timeunit(3, minutes).to-seconds, 3 * 60, 'time unit to seconds';
+is timeunit(:3min, :1sec).to-seconds, 3 * 60 + 1, 'time unit all to seconds';
+is seconds(10).plus(minutes(1)).to-seconds, 10 + 60, 'unit plus unit';
+is minutes(50).plus(:1hour :1minute).to-minutes, 50 + 60 + 1, 'unit plus all to minutes';
+is (minutes(30) + days(4)).to-hours, 0.5 + 4 * 24, 'unit + unit to hours';
+is hours(3).minus(:1hour :30min).to-hours, 1.5, 'unit minus unit all';
+is timeunit(:3min).minus(seconds(1)).to-millis, (3 * 60 - 1) * 1000, 'unit minus unit to millis';
+is (millis(4) - micros(3)).to-micros, 4 * 1000 - 3, 'unit - unit to micros';
+is nanos(35500).to(micros), 35.5, 'unit to type';
+ok minutes(30) === minutes(10) + minutes(20), '===';
+ok minutes(30) <= minutes(30), '<=';
+ok minutes(40) > minutes(30), '>';
+is nanos(3001) <=> micros(3), More, '<=>';
+ok nanos(3000) == micros(3), '==';
+ok nanos(3001) != micros(3), '!=';
+
+sub api(TimeUnit:D $time) { is $time.to-days, 4, 'unit as routing parameter'; }
+api(hours(96));
+
+dies-ok { timeunit(:1hhour, :3min) }, 'bad parsing';
